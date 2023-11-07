@@ -9,7 +9,6 @@
 
 ARG ROS_DISTRO=humble
 FROM osrf/ros:humble-desktop
-LABEL maintainer="Fetullah Atas<fetulahatas1@gmail.com>"
 
 RUN apt-get update; apt-get -y upgrade
 
@@ -38,17 +37,9 @@ RUN cd ~/ros2_ws/src && rm -rf vox_nav
 RUN cd ~/ros2_ws && wget https://raw.githubusercontent.com/jediofgever/vox_nav/$ROS_DISTRO/underlay.repos && vcs import src < underlay.repos --recursive 
 RUN cd ~/ros2_ws && vcs pull src 
 
-# install CUDA
-RUN /bin/bash -c 'export cuda=11.4 ; \
-                  source ~/ros2_ws/src/vox_nav/scripts/install_cuda_ubuntu.sh; \
-                  echo "export PATH=/usr/local/cuda-11.4/bin${PATH:+:${PATH}}" >> /home/ubuntu/.bashrc;  \
-                  echo "export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" >> /home/ubuntu/.bashrc;'
- 
 RUN /bin/bash -c 'cd ~/ros2_ws; \
                   source /opt/ros/$ROS_DISTRO/setup.bash; \
                   rosdep install -y -r -q --from-paths src --ignore-src --rosdistro $ROS_DISTRO; \
-                  export PATH=/usr/local/cuda-11.4/bin${PATH:+:${PATH}}; \
-                  export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}; \
                   colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DACADOS_WITH_QPOASES=ON -DACADO_CODE_IS_READY=ON -DWITH_IPOPT=true --packages-select ompl casadi; \
                   sudo cp install/ompl/lib/libompl.so* /usr/local/lib/; \
                   sudo cp install/casadi/lib/libcasadi.so* /usr/local/lib/; \  
