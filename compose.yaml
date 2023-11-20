@@ -1,0 +1,59 @@
+# version: '2'
+
+# persist changes in your home directory
+# volumes:
+#   home:
+
+# services:
+#   vox_nav:
+#     build: .
+#     restart: unless-stopped
+#     image: jediofgever/vox_nav_deps
+#     environment:
+#       RESOLUTION: 1280x720
+#     volumes:
+#       - ../.:/volume/host
+#     ports:
+#       - "6080:80"
+#       - "6081:8888"
+
+# Quick setup
+# $ xhost local:root
+# $ docker compose -f compose.ariadna.simulation.yaml up
+
+# docker compose up --build
+# docker exec -it pkoczy-vox-nav-1 bash
+
+version: '2'
+services:
+    vox-nav:
+        build:
+            context: ./
+            dockerfile: vox_nav/docker/Dockerfile
+        # runtime: nvidia
+        network_mode: host
+        ipc: host
+        tty: true 
+        environment:
+            - DISPLAY
+            - QT_X11_NO_MITSHM = 1
+            - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_fastrtps_cpp}
+            - NVIDIA_VISIBLE_DEVICES=all
+            - NVIDIA_DRIVER_CAPABILITIES=all
+            - ROS_DOMAIN_ID
+        volumes:
+            - /tmp/.X11-unix:/tmp/.X11-unix
+            - /dev/dri:/dev/dri
+        # command: >
+        #     ros2 launch ariadna_bringup ariadna_bringup.launch.py use_sim:=True
+        #         use_nav2:=${USE_NAV2}
+        #         find_mines:=False
+        #         spawn_mines:=True
+        #         size_x:=12
+        #         size_y:=12
+        #         use_manipulator:=${USE_MANIPULATOR:-True}
+        #         use_odrive:=${USE_ODRIVE:-True}
+        #         use_imu:=${USE_IMU:-True}
+        #         use_lidar:=${USE_LIDAR:-True}
+        #         use_gripper:=${USE_GRIPPER:-True}
+        #         world:='cafe.world'
