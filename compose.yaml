@@ -29,7 +29,7 @@ services:
     vox-nav:
         build:
             context: ./
-            dockerfile: vox_nav/docker/Dockerfile
+            dockerfile: docker/Dockerfile
         # runtime: nvidia
         network_mode: host
         ipc: host
