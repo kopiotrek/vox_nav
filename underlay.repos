@@ -1,8 +1,8 @@
 repositories:
-  vox_nav:
-    type: git
-    url: https://github.com/NMBURobotics/vox_nav.git
-    version: humble
+  #vox_nav:
+  #  type: git
+  #  url: https://github.com/NMBURobotics/vox_nav.git
+  #  version: humble
   #perception_pcl:
   #  type: git
   #  url: https://github.com/ros-perception/perception_pcl.git
@@ -23,7 +23,7 @@ repositories:
   #    type: git
   #    url: https://github.com/jediofgever/cupoch.git
   #    version: dynamic_points_dev  
-  #fast_gicp:
-  #    type: git
-  #    url: https://github.com/CezeriRobotics/fast_gicp.git 
-  #    version: foxy  
+  fast_gicp:
+      type: git
+      url: https://github.com/CezeriRobotics/fast_gicp.git 
+      version: master  
