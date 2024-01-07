@@ -30,6 +30,7 @@ services:
         build:
             context: ./
             dockerfile: docker/Dockerfile
+        image: kopiotrek/vox_nav:no_cuda
         # runtime: nvidia
         network_mode: host
         ipc: host
