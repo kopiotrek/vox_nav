@@ -60,7 +60,7 @@ set(dependencies
         cv_bridge
         )
         
-option(BUILD_VGICP_CUDA "Build GPU-powered VGICP" ON)
+option(BUILD_VGICP_CUDA "Build GPU-powered VGICP" OFF) # previously ON
 add_definitions(${PCL_DEFINITIONS})
 add_definitions(-BUILD_VGICP_CUDA)
 

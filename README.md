@@ -1,3 +1,62 @@
+### TEMPORARY WORK IN PROGRESS SECTION
+
+Running:
+
+ docker build -t vox_nav -f vox_nav/docker/Dockerfile . --no-cache
+ docker build -t vox_nav --no-cache --progress=plain -f vox_nav/docker/Dockerfile . 2>&1 | tee build.log
+
+docker run -it --network=host --ipc=host \
+-e DISPLAY \
+-e QT_X11_NO_MITSHM=1 \
+-e RMW_IMPLEMENTATION=rmw_fastrtps_cpp \
+-e NVIDIA_VISIBLE_DEVICES=all \
+-e NVIDIA_DRIVER_CAPABILITIES=all \
+-e ROS_DOMAIN_ID \
+-v /tmp/.X11-unix:/tmp/.X11-unix \
+-v /dev/dri:/dev/dri \
+vox-nav
+
+#TODO:
+Add parallel building
+
+
+
+
+
+Build problems:
+
+#14 78.49 cp: cannot stat 'install/ompl/lib/libompl.so*': No such file or directory
+
+#14 140.6 /root/app/src/vox_nav/vox_nav_utilities/include/vox_nav_utilities/planner_helpers.hpp:20:10: fatal error: ompl/base/samplers/ObstacleBasedValidStateSampler.h: No such file or directory
+#14 140.6    20 | #include <ompl/base/samplers/ObstacleBasedValidStateSampler.h>
+#14 140.6       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+PROBLEMS TO BE ISSUED:
+1. 
+cp install/ompl/lib/libompl.so* /usr/local/lib/; \
+cp install/casadi/lib/libcasadi.so* /usr/local/lib/; \  
+
+had to be changed to:
+
+cp install/ompl/share/libompl.so* /usr/local/lib/; \
+cp install/casadi/lib/libcasadi.so* /usr/local/lib/; \  
+
+2.
+problem with paths to ompl files solved with:
+
+RUN mv /opt/ros/$ROS_DISTRO/include/ompl-1.6/ompl /opt/ros/$ROS_DISTRO/include && \
+    rm -rf /opt/ros/$ROS_DISTRO/include/ompl-1.6
+
+3. 
+fast_gicp was not included in underlay.repos, but needed by vox_nav_misc packages
+
+4.
+
+
+
 # vox_nav
 A navigation framework for outdoor robotics in rough uneven terrains.
 
